@@ -1,0 +1,30 @@
+timestamp,source_ip,threat_type,threat_score,severity,event_count,unique_ports,failed_connections,detection_reason
+2026-10-08T19:36:01,194.26.29.11,DDOS,0.605,HIGH,15,3,8,Severe exfiltration asymmetry (sent/recv: 395.6x)
+2026-10-08T19:36:01,198.51.100.42,DDOS,0.605,HIGH,15,3,9,Severe exfiltration asymmetry (sent/recv: 460.6x)
+2026-10-08T19:36:01,185.220.101.9,DDOS,0.605,HIGH,15,3,11,Severe exfiltration asymmetry (sent/recv: 346.4x)
+2026-10-08T19:36:01,185.220.101.5,DDOS,0.605,HIGH,15,3,7,Severe exfiltration asymmetry (sent/recv: 282.9x)
+2026-10-08T19:36:01,45.154.255.88,DDOS,0.605,HIGH,15,3,10,Severe exfiltration asymmetry (sent/recv: 402.3x)
+2026-10-08T19:36:03,194.26.29.11,DDOS,1.0,CRITICAL,102,3,55,"DDoS volumetric flood: 51.0 ev/s, 119098.0 pkts/s, 28579.0 KB/s targeted across 3 ports."
+2026-10-08T19:36:03,198.51.100.42,DDOS,1.0,CRITICAL,119,3,71,"DDoS volumetric flood: 59.5 ev/s, 135537.5 pkts/s, 32169.5 KB/s targeted across 3 ports."
+2026-10-08T19:36:03,45.154.255.88,DDOS,1.0,CRITICAL,114,3,62,"DDoS volumetric flood: 57.0 ev/s, 130770.0 pkts/s, 30231.4 KB/s targeted across 3 ports."
+2026-10-08T19:36:03,185.220.101.5,DDOS,1.0,CRITICAL,101,3,55,"DDoS volumetric flood: 50.5 ev/s, 115279.5 pkts/s, 26220.5 KB/s targeted across 3 ports."
+2026-10-08T19:36:03,185.220.101.9,DDOS,1.0,CRITICAL,118,3,74,"DDoS volumetric flood: 59.0 ev/s, 134251.5 pkts/s, 29263.9 KB/s targeted across 3 ports."
+2026-10-08T19:36:05,194.26.29.11,DDOS,1.0,CRITICAL,199,3,121,"DDoS volumetric flood: 49.8 ev/s, 113147.8 pkts/s, 27157.0 KB/s targeted across 3 ports."
+2026-10-08T19:36:05,198.51.100.42,DDOS,1.0,CRITICAL,217,3,137,"DDoS volumetric flood: 54.2 ev/s, 131681.5 pkts/s, 29245.6 KB/s targeted across 3 ports."
+2026-10-08T19:36:10,203.0.113.77,PORT_SCAN,0.606,HIGH,20,19,18,Port scan reconnaissance: 19 unique ports probed with 90.0% connection failures (18 rejected).
+2026-10-08T19:36:10,198.18.0.42,PORT_SCAN,0.603,HIGH,19,19,19,High behavioral threat score: 0.60 (HIGH)
+2026-10-08T19:36:10,198.18.0.15,PORT_SCAN,0.603,HIGH,19,19,19,High behavioral threat score: 0.60 (HIGH)
+2026-10-08T19:36:10,192.0.2.99,PORT_SCAN,0.603,HIGH,19,19,18,High behavioral threat score: 0.60 (HIGH)
+2026-10-08T19:36:12,203.0.113.77,PORT_SCAN,0.958,CRITICAL,86,82,81,Port scan reconnaissance: 82 unique ports probed with 94.2% connection failures (81 rejected).
+2026-10-08T19:36:12,198.18.0.42,PORT_SCAN,0.958,CRITICAL,86,80,83,Port scan reconnaissance: 80 unique ports probed with 96.5% connection failures (83 rejected).
+2026-10-08T19:36:12,198.18.0.15,PORT_SCAN,0.886,CRITICAL,62,60,58,Port scan reconnaissance: 60 unique ports probed with 93.5% connection failures (58 rejected).
+2026-10-08T19:36:12,192.0.2.99,PORT_SCAN,0.949,CRITICAL,83,83,81,Port scan reconnaissance: 83 unique ports probed with 97.6% connection failures (81 rejected).
+2026-10-08T19:36:14,172.16.50.89,ANOMALY,0.703,HIGH,1,1,0,Severe exfiltration asymmetry (sent/recv: 1837.3x); Covert port access: 12345
+2026-10-08T19:36:14,172.16.50.210,ANOMALY,0.703,HIGH,1,1,1,Severe exfiltration asymmetry (sent/recv: 7393.1x); Covert port access: 4444
+2026-10-08T19:36:14,172.16.50.12,ANOMALY,0.703,HIGH,1,1,0,Severe exfiltration asymmetry (sent/recv: 3703.6x); Covert port access: 1337
+2026-10-08T19:36:16,172.16.50.89,ANOMALY,0.817,CRITICAL,39,9,8,Severe exfiltration asymmetry (sent/recv: 2012.9x); Covert port access: 5555
+2026-10-08T19:36:16,172.16.50.210,ANOMALY,0.832,CRITICAL,44,9,15,Severe exfiltration asymmetry (sent/recv: 1755.1x); Covert port access: 1337
+2026-10-08T19:36:16,172.16.50.12,ANOMALY,0.829,CRITICAL,43,9,7,Severe exfiltration asymmetry (sent/recv: 1833.7x); Covert port access: 31337
+2026-10-08T19:36:18,172.16.50.89,ANOMALY,0.898,CRITICAL,66,9,17,Severe exfiltration asymmetry (sent/recv: 1954.0x); Covert port access: 6667
+2026-10-08T19:36:18,172.16.50.210,ANOMALY,0.66,HIGH,80,9,23,Severe exfiltration asymmetry (sent/recv: 1878.1x)
+2026-10-08T19:36:18,172.16.50.12,ANOMALY,0.711,HIGH,97,9,20,Severe exfiltration asymmetry (sent/recv: 1827.5x)

@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# Big Data & Spark
+metastore_db/
+derby.log
+.spark-staging/
+spark-warehouse/
+*.parquet/
+*.checkpoint/
+
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Sensitive & Logs
+.env
+*.log
+
+# Large Datasets (keep samples in repo, ignore generated multi-gigabyte files)
+data/generated/*.csv
+data/raw/*.csv
+data/processed/*.csv
+!data/samples/sample_events.csv
+
+# Emulated HDFS local directory contents (keep structure)
+data/hdfs_emulated/*
+!data/hdfs_emulated/.gitkeep

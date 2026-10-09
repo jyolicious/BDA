@@ -1,0 +1,5 @@
+cluster,host_count,mean_event_count,mean_bytes_sent,mean_bytes_recv,mean_packet_count,mean_unique_ports,mean_failed_conns,mean_duration_ms,assigned_profile,threat_severity,detection_rationale
+0,164,31.57,3362647.51,859656.75,116.12,9.12,4.73,238.07,Covert Channel / Data Exfiltration,MEDIUM,Asymmetric data transmission volume exceeding baseline expectations.
+1,99,28.35,256572.07,949900.54,45.45,9.37,1.43,245.43,Covert Channel / Data Exfiltration,MEDIUM,Asymmetric data transmission volume exceeding baseline expectations.
+2,3,343.67,495534427.0,276058.0,671.7,9.0,71.33,1884.3,Volumetric Flood / DDoS Attack,CRITICAL,High traffic volume (483920.3 KB) and burst packet rate (671.7 pkts/flow).
+3,4,246.0,26698.25,4844.25,2.51,219.0,234.5,10.52,Reconnaissance / Port Scanner,HIGH,Probing 219.0 distinct ports with 234.5 connection rejections.

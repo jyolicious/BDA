@@ -1,0 +1,61 @@
+# ==============================================================================
+# Cyber Threat Detection Rules and Threat Scoring Weights
+# ==============================================================================
+
+ddos_detector:
+  description: "Detects distributed/volumetric denial of service traffic bursts"
+  min_event_count: 80                  # Minimum events in window to evaluate
+  min_event_rate_per_sec: 15.0         # Threshold rate of events per second from IP
+  min_packet_rate_per_sec: 300.0       # Threshold packets per second
+  min_byte_rate_per_sec: 150000.0      # Threshold bytes per second (~150 KB/s per host)
+  max_port_spread_ratio: 0.15          # DDoS targets a small set of ports/targets
+  weight: 0.30
+
+port_scan_detector:
+  description: "Detects horizontal/vertical reconnaissance and port sweep patterns"
+  min_unique_ports: 15                 # Distinct ports probed in window
+  min_failed_connection_ratio: 0.50    # At least 50% failures/drops (RST/Timeout)
+  min_event_count: 20                  # Minimum attempts
+  max_avg_duration_ms: 120.0           # Scans typically probe quickly with low duration
+  weight: 0.25
+
+anomaly_detector:
+  description: "Detects behavioral deviations from standard network baseline"
+  z_score_threshold: 2.2               # Standard deviations from baseline
+  min_byte_ratio_asymmetry: 10.0       # Abnormal sent vs received ratio (exfiltration/tunneling)
+  unusual_ports: [4444, 6667, 31337, 1337, 9999, 12345, 5555, 8888]
+  weight: 0.20
+
+frequency_detector:
+  description: "Heavy-hitter source IP event volume scoring"
+  high_frequency_threshold: 100        # Window events threshold for max frequency score
+  weight: 0.25
+
+threat_scoring:
+  weights:
+    frequency_score: 0.25
+    traffic_score: 0.30
+    port_scan_score: 0.25
+    anomaly_score: 0.20
+
+  severity_bands:
+    LOW:
+      min: 0.00
+      max: 0.30
+      color: "#28a745"
+      description: "Routine or minor deviation within safe parameters"
+    MEDIUM:
+      min: 0.30
+      max: 0.60
+      color: "#ffc107"
+      description: "Suspicious volume or unusual port access detected"
+    HIGH:
+      min: 0.60
+      max: 0.80
+      color: "#fd7e14"
+      description: "Probable active reconnaissance, port scan, or heavy anomaly"
+    CRITICAL:
+      min: 0.80
+      max: 1.00
+      color: "#dc3545"
+      description: "Active high-volume DDoS or malicious intrusion detected"

@@ -1,0 +1,4 @@
+dataset_size,file_size_mb,generation_time_sec,mapreduce_time_sec,mapreduce_throughput_eps,streaming_throughput_eps
+10000,0.86,0.103,0.147,67814.6,46232.6
+50000,4.29,0.601,0.226,221698.2,44343.3
+100000,8.58,1.244,0.292,342971.2,48471.4

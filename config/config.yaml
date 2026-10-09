@@ -1,0 +1,97 @@
+# ==============================================================================
+# Cyber Threat Detection & Network Intelligence - Main Configuration
+# ==============================================================================
+
+app:
+  name: "Real-Time Cyber Threat Detection and Network Intelligence"
+  version: "1.0.0"
+  environment: "local"
+
+database:
+  mongo_uri: "mongodb://localhost:27017/"
+  db_name: "cyber_threat_intelligence"
+  collections:
+    alerts: "threat_alerts"
+    events: "streaming_events"
+    aggregates: "batch_aggregates"
+    clusters: "spark_clusters"
+
+hdfs:
+  # Native WebHDFS endpoint (e.g., http://localhost:9870 or http://namenode:9870)
+  webhdfs_url: "http://localhost:9870"
+  user: "hadoop"
+  root_dir: "/cyber-threat"
+  directories:
+    raw: "/cyber-threat/raw"
+    processed: "/cyber-threat/processed"
+    features: "/cyber-threat/features"
+    results: "/cyber-threat/results"
+  # Transparent fallback: When native HDFS daemons are offline, this maintains
+  # identical HDFS logical directory structures and behavior on disk.
+  emulated_dir: "data/hdfs_emulated"
+  allow_emulated_fallback: true
+
+spark:
+  app_name: "CyberThreatIntelligence_Spark"
+  master: "local[*]"
+  driver_memory: "4g"
+  executor_memory: "4g"
+  sql_shuffle_partitions: 8
+  kmeans:
+    k: 4
+    seed: 42
+    max_iter: 30
+    features:
+      - "event_count"
+      - "total_bytes_sent"
+      - "total_bytes_received"
+      - "avg_packet_count"
+      - "unique_dest_ports"
+      - "failed_conn_count"
+      - "avg_duration_ms"
+      - "protocol_diversity"
+
+data_generation:
+  default_events: 100000
+  random_seed: 42
+  traffic_distribution:
+    NORMAL: 0.70
+    DDOS: 0.10
+    PORT_SCAN: 0.10
+    ANOMALOUS: 0.10
+  ip_pools:
+    target_servers:
+      - "10.0.0.5"
+      - "10.0.0.10"
+      - "10.0.0.15"
+      - "10.0.0.20"
+      - "10.0.0.25"
+    normal_clients_subnet: "192.168.1.0/24"
+    attacker_subnets:
+      - "185.220.101.0/24"
+      - "194.26.29.0/24"
+      - "45.154.255.0/24"
+    anomalous_subnet: "172.16.50.0/24"
+
+streaming:
+  window_size_seconds: 300       # 5-minute sliding window
+  slide_step_seconds: 5         # Evaluation step
+  event_rate_normal: 50         # Events/sec for normal stream
+  event_rate_ddos: 500          # High-rate burst for DDoS
+  event_rate_port_scan: 150     # Rapid port traversal
+  event_rate_anomaly: 80        # Irregular protocol telemetry
+  top_k_suspicious_ips: 20
+  bloom_filter:
+    expected_elements: 1000000
+    false_positive_rate: 0.01
+
+paths:
+  raw_data: "data/raw"
+  generated_data: "data/generated"
+  processed_data: "data/processed"
+  samples_data: "data/samples"
+  results_mapreduce: "results/mapreduce"
+  results_spark: "results/spark"
+  results_streaming: "results/streaming"
+  results_figures: "results/figures"
+  results_reports: "results/reports"

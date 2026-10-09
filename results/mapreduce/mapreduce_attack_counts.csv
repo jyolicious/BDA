@@ -1,0 +1,5 @@
+attack_type,event_count,percentage
+NORMAL,7037,70.37%
+ANOMALOUS,1031,10.31%
+PORT_SCAN,984,9.84%
+DDOS,948,9.48%
