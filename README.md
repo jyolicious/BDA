@@ -1,6 +1,6 @@
 # Real-Time Cyber Threat Detection & Network Intelligence Using Big Data Analytics
 
-An end-to-end, technically credible Big Data Analytics system that integrates **distributed batch processing (HDFS, Hadoop MapReduce, Apache Spark MLlib)** with **low-latency real-time stream analytics (Sliding Windows, Bloom Filters, Space-Saving Heavy Hitters, Multi-Factor Threat Scoring)** and persistent NoSQL storage (**MongoDB**) visualized via an interactive **Streamlit Dashboard**.
+An end-to-end Big Data Analytics system that integrates **batch processing (HDFS, Hadoop MapReduce, Apache Spark MLlib)** with **real-time stream analytics (sliding windows, Bloom Filters, heavy hitters, and threat scoring)** and MongoDB-backed alert storage. The primary SOC interface is a **React/Vite dashboard** connected to a **FastAPI** REST and WebSocket backend. A Streamlit dashboard is also retained for standalone use.
 
 ---
 
@@ -8,7 +8,7 @@ An end-to-end, technically credible Big Data Analytics system that integrates **
 
 Modern enterprise networks generate millions of flow events every second. Traditional relational database management systems and static intrusion detection systems fail to cope with the sheer volume, velocity, and variety of this network telemetry. 
 
-This project demonstrates a production-grade, reproducible academic Big Data solution that bridges the gap between:
+This project demonstrates a reproducible academic Big Data solution that bridges the gap between:
 1. **Historical Deep Batch Analytics:** Offline distributed storage (HDFS), distributed MapReduce aggregations, and Apache Spark MLlib unsupervised clustering to extract host behavioral baselines.
 2. **Real-Time Streaming Cyber Intelligence:** Millisecond-level stream processing utilizing a 5-minute sliding window, probabilistic Bloom Filter membership testing, bounded-memory heavy-hitter tracking, and explainable threat scoring.
 
@@ -31,7 +31,7 @@ Cyber adversaries continuously employ distributed denial of service (DDoS) flood
 - **Unsupervised Machine Learning:** Train Spark MLlib K-Means models to segment hosts into interpretable behavioral profiles without requiring pre-labeled training data.
 - **Sub-Millisecond Stream Detection:** Implement a 5-minute rolling sliding window, optimal Bloom Filter, and Space-Saving heavy-hitters tracker.
 - **Explainable Threat Scoring:** Calculate composite threat scores $[0.0 - 1.0]$ with discrete severity banding (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`).
-- **Real-Time SOC Dashboard:** Deliver a live Streamlit GUI with interactive attack simulation controls, KPI telemetry, and threat charts.
+- **Real-Time SOC Dashboard:** Deliver a React/Vite GUI with live KPI telemetry, traffic charts, recent events and alerts, service status, and synthetic attack simulation controls.
 
 ---
 
@@ -62,7 +62,7 @@ Cyber adversaries continuously employ distributed denial of service (DDoS) flood
         Aggregated Flow Features                            │                 │
                    │                                        └────────┬────────┘
                    ▼                                                 │
-        Apache Spark 4.2.0 Engine                                    ▼
+        Apache Spark MLlib Engine                                   ▼
        - Feature Engineering (Scaling)                         Multi-Detector
        - MLlib K-Means Clustering                              (DDoS, Port Scan,
        - Behavioral Heuristic Profiler                          Covert Anomaly)
@@ -73,23 +73,28 @@ Cyber adversaries continuously employ distributed denial of service (DDoS) flood
                    │                                                 │
                    └────────────────────────┬────────────────────────┘
                                             ▼
-                                  MongoDB NoSQL Storage
-                             (Collections: alerts, aggregates)
+                                  MongoDB / in-memory alert fallback
+                                  (alert storage and retrieval)
                                             │
                                             ▼
-                               Streamlit Interactive Dashboard
+                                  FastAPI REST + WebSocket API
+                                            │
+                                            ▼
+                                  React/Vite SENTINEL Dashboard
 ```
 
 ---
 
 ## 5. Technology Stack
 
-- **Distributed Batch Analytics:** Apache Spark 4.2.0 (PySpark MLlib), Hadoop MapReduce (Streaming API)
+- **Distributed Batch Analytics:** PySpark MLlib, Hadoop MapReduce (Streaming API)
 - **Distributed Storage:** HDFS (WebHDFS client with structured local emulated fallback)
-- **NoSQL Database:** MongoDB Server 8.0 / PyMongo (with compound indexing)
-- **Stream Processing:** Python 3.13, Rolling Sliding Window Deque, Kirsch-Mitzenmacher Double-Hashing Bloom Filter, Space-Saving Heavy Hitters
-- **User Interface:** Streamlit 1.65.0, Altair, Matplotlib
-- **Testing & Verification:** PyTest 9.1
+- **NoSQL Database:** MongoDB / PyMongo, with an in-memory alert fallback when MongoDB is unavailable
+- **Stream Processing:** Python, rolling sliding-window deque, Bloom Filter, Space-Saving heavy hitters
+- **API:** FastAPI REST endpoints and WebSocket telemetry
+- **Primary User Interface:** React, TypeScript, Vite, Tailwind CSS, and Recharts
+- **Additional User Interface:** Streamlit dashboard (`dashboard/app.py`)
+- **Testing & Verification:** Pytest
 
 ---
 
@@ -141,6 +146,8 @@ BDA/
 │   │   └── pipeline.py                 # Integrated real-time pipeline engine
 │   ├── database/
 │   │   └── mongodb.py                  # MongoDB indexing, storage, and queries
+│   ├── api/
+│   │   └── server.py                   # FastAPI REST and WebSocket backend
 │   └── common/
 │       ├── logger.py                   # Unified structured logging
 │       └── utils.py                    # Paths, config loader, and helpers
@@ -161,7 +168,12 @@ BDA/
 │   ├── components.py                   # Reusable UI cards and widgets
 │   └── queries.py                      # Data retrieval and chart abstractions
 │
-├── tests/                              # PyTest test suite (14 passing tests)
+├── frontend/                           # React/Vite SENTINEL SOC dashboard
+│   ├── src/
+│   ├── package.json
+│   └── vite.config.ts                  # Proxies /api and /ws to localhost:8000
+│
+├── tests/                              # Pytest unit and integration tests
 │   ├── test_generator.py
 │   ├── test_bloom_filter.py
 │   ├── test_detectors.py
@@ -190,17 +202,22 @@ BDA/
 ## 7. Setup & Installation
 
 ### Step 1: Install Dependencies
+Install the Python dependencies from the repository root:
 ```powershell
 pip install -r requirements.txt
 ```
 
-### Step 2: Verify MongoDB Service
-MongoDB Server is used for persistent alert storage. If using local native MongoDB (port 27017):
+Install the frontend dependencies:
 ```powershell
-# Verify MongoDB connection
-python -c "from src.database.mongodb import MongoDBManager; print('MongoDB Status:', MongoDBManager().is_connected())"
+Set-Location frontend
+npm ci
+Set-Location ..
 ```
-*(Optional Docker alternative: `docker compose up -d`)*
+
+Node.js and npm are required for the React/Vite dashboard. MongoDB is optional for running the dashboard: without a MongoDB connection, alerts use the backend's in-memory fallback. To run MongoDB locally with Docker Compose:
+```powershell
+docker compose up -d mongodb
+```
 
 ---
 
@@ -240,19 +257,33 @@ Persist historical batch aggregates and reference alerts into MongoDB:
 python scripts/seed_mongodb.py
 ```
 
-### Step 6: Launch Real-Time Streamlit Dashboard
-Launch the SOC dashboard:
+### Step 6: Launch the SENTINEL Web Dashboard
+Start the FastAPI backend from the repository root in the first terminal:
+```powershell
+python -m uvicorn src.api.server:app --host 127.0.0.1 --port 8000
+```
+
+In a second terminal, launch the React/Vite development server:
+```powershell
+Set-Location frontend
+npm run dev -- --host 127.0.0.1
+```
+
+Open `http://127.0.0.1:5173/`. Vite proxies API requests and the telemetry WebSocket to `http://127.0.0.1:8000`; no separate API URL configuration is required for local development. Check backend health at `http://127.0.0.1:8000/api/health` and interactive API documentation at `http://127.0.0.1:8000/docs`.
+
+The dashboard initially shows the live stream as paused. Use **START STREAM** or the **Attack Simulator** page to start the synthetic event producer. This generates synthetic events for this application's detector; it does not send traffic to external networks. Stop the stream from the dashboard when finished.
+
+### Optional: Launch the Streamlit Dashboard
+The original Streamlit interface is still available:
 ```powershell
 streamlit run dashboard/app.py
 ```
-Access the dashboard at `http://localhost:8501`.
+Open `http://localhost:8501`.
 
-### Step 7: Run Controlled Live Attack Simulation
-In a separate terminal, execute the automated academic demonstration sequence:
+### Optional: Run the standalone demo script
 ```powershell
 python scripts/run_demo.py --step-duration 5
 ```
-Watch the Streamlit dashboard react in real-time as traffic spikes and alerts fire!
 
 ---
 
