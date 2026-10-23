@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-cyber-bg text-cyber-text font-sans antialiased overflow-x-hidden selection:bg-cyber-cyan selection:text-black;
+  }
+}
+
+/* Custom Tactical Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070B14;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1D2B40;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #39D5FF;
+}
+
+/* Tactical Corner Brackets (inspired by reference image 2) */
+.hud-card {
+  position: relative;
+  background-color: #101A2B;
+  border: 1px solid #1D2B40;
+}
+
+.hud-card::before, .hud-card::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  pointer-events: none;
+}
+
+.hud-card::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1.5px solid #39D5FF;
+  border-left: 1.5px solid #39D5FF;
+}
+
+.hud-card::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1.5px solid #39D5FF;
+  border-right: 1.5px solid #39D5FF;
+}
+
+.hud-card-amber::before {
+  border-top-color: #FFBF69;
+  border-left-color: #FFBF69;
+}
+.hud-card-amber::after {
+  border-bottom-color: #FFBF69;
+  border-right-color: #FFBF69;
+}
+
+.hud-card-red::before {
+  border-top-color: #FF4D67;
+  border-left-color: #FF4D67;
+}
+.hud-card-red::after {
+  border-bottom-color: #FF4D67;
+  border-right-color: #FF4D67;
+}
